@@ -1,6 +1,5 @@
 package com.employeepayrollapp.dto;
 
-import com.employeepayrollapp.entity.EmployeeData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

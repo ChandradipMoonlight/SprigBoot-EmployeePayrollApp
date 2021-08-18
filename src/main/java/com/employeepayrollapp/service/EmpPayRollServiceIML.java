@@ -2,6 +2,7 @@ package com.employeepayrollapp.service;
 
 import com.employeepayrollapp.dto.EmpDTO;
 import com.employeepayrollapp.entity.EmployeeData;
+import com.employeepayrollapp.exception.EmployeeDataNotFoundException;
 import com.employeepayrollapp.repository.EmpPayRollRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -47,7 +49,11 @@ public class EmpPayRollServiceIML implements EmpPayRollService {
     @Override
     public EmployeeData getEmployeePayRollDataById(int empId) {
         log.info("Inside getEmployeePayRollDataById() Method of the EmpPayRollService Class!");
-        return empPayRollRepository.findById(empId).get();
+        Optional<EmployeeData> employeeData = empPayRollRepository.findById(empId);
+        if (employeeData.isEmpty()) {
+            throw new EmployeeDataNotFoundException("Employee Data is Not Available");
+        }
+        return employeeData.get();
     }
 
     /**
@@ -62,11 +68,13 @@ public class EmpPayRollServiceIML implements EmpPayRollService {
         log.info("Inside UpdateEmployeePayrollDataById() Method of EmpPayRollService Class");
         EmployeeData employeeData = empPayRollRepository.findById(empId).get();
 
-        if (Objects.nonNull(empDTO.getEmpName()) &&
-                !"".equalsIgnoreCase(empDTO.getEmpName())) {
-            employeeData.setEmpName(empDTO.getEmpName());
-        }
-        employeeData.setEmpSalary(empDTO.getEmpSalary());
+        if (Objects.isNull(empDTO)) {
+            throw new EmployeeDataNotFoundException("No such Id is present");
+        } else if
+        (Objects.nonNull(empDTO.getEmpName()) &&
+        !"".equalsIgnoreCase(empDTO.getEmpName())) {
+        employeeData.setEmpName(empDTO.getEmpName());
+        }      employeeData.setEmpSalary(empDTO.getEmpSalary());
         return empPayRollRepository.save(employeeData);
     }
 

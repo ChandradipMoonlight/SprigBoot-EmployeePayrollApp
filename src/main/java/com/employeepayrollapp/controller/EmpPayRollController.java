@@ -3,6 +3,7 @@ package com.employeepayrollapp.controller;
 import com.employeepayrollapp.dto.EmpDTO;
 import com.employeepayrollapp.dto.ResponseDTO;
 import com.employeepayrollapp.entity.EmployeeData;
+import com.employeepayrollapp.exception.EmployeeDataNotFoundException;
 import com.employeepayrollapp.service.EmpPayRollService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,8 @@ public class EmpPayRollController {
      * @return Employee data.
      */
     @GetMapping("/getById/{empId}")
-    public ResponseEntity<ResponseDTO> getEmployeePayRollDataByID(@PathVariable("empId") int empId) {
+    public ResponseEntity<ResponseDTO> getEmployeePayRollDataByID(@PathVariable("empId")
+                                                                              int empId) throws EmployeeDataNotFoundException {
         log.info("Inside getEmployeePayRollData() Method of the Class EmpPayRollController");
         EmployeeData employeeData = empPayRollService.getEmployeePayRollDataById(empId);
         ResponseDTO responseDTO = new ResponseDTO("Employee Data Fetched Successfully By Using Id", employeeData);
@@ -71,7 +73,7 @@ public class EmpPayRollController {
      */
     @PutMapping("/update/{empId}")
     public ResponseEntity<ResponseDTO> updateEmployeePayRollDataById(@PathVariable("empId") int empId,
-                                                             @Valid  @RequestBody EmpDTO empDTO) {
+                                                             @Valid  @RequestBody EmpDTO empDTO) throws EmployeeDataNotFoundException{
         log.info("Inside updateEmployeePayRollDataById() Method of the EmpPayRollController");
         EmployeeData employeeData = empPayRollService.updateEmployeePayRollDataById(empId, empDTO);
         ResponseDTO responseDTO = new ResponseDTO("Employee Data Updated Successfully!!", employeeData);
