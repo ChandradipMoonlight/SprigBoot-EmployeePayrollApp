@@ -16,18 +16,16 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin
 @Slf4j
 public class EmpPayRollController {
 
     @Autowired
     EmpPayRollService empPayRollService;
 
-//    private final Logger logger = (Logger) LoggerFactory.getLogger(EmpPayRollController.class);
-
-
     /**
-     * Purpose : Ability to add employee details in Employee Payroll
-     * @param empDTO;
+     * Purpose : Ability to add employee details in Employee Payroll service.
+     * @param empDTO this is Object of EmpDTO class
      * @return responseDTO
      */
 

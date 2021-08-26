@@ -5,6 +5,7 @@ import com.employeepayrollapp.entity.EmployeeData;
 import com.employeepayrollapp.exception.EmployeeDataNotFoundException;
 import com.employeepayrollapp.repository.EmpPayRollRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,10 @@ import java.util.Optional;
 public class EmpPayRollServiceIML implements EmpPayRollService {
 
     @Autowired
-    EmpPayRollRepository empPayRollRepository;
+    private EmpPayRollRepository empPayRollRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
     /**
      * Purpose: Ability to create or Insert the data into the EmployeePayroll Data;
      * @param empDTO;
@@ -27,7 +30,7 @@ public class EmpPayRollServiceIML implements EmpPayRollService {
     @Override
     public EmployeeData createEmployeePayRollData(EmpDTO empDTO) {
         log.info("Inside CreateEmployeePayRollData() Method of the EmpPayRollService");
-        EmployeeData employeeData = new EmployeeData(empDTO);
+        EmployeeData employeeData = modelMapper.map(empDTO, EmployeeData.class);
         return empPayRollRepository.save(employeeData);
     }
 
@@ -71,10 +74,16 @@ public class EmpPayRollServiceIML implements EmpPayRollService {
         if (Objects.isNull(empDTO)) {
             throw new EmployeeDataNotFoundException("No such Id is present");
         } else if
-        (Objects.nonNull(empDTO.getEmpName()) &&
-        !"".equalsIgnoreCase(empDTO.getEmpName())) {
-        employeeData.setEmpName(empDTO.getEmpName());
-        }      employeeData.setEmpSalary(empDTO.getEmpSalary());
+        (Objects.nonNull(empDTO.getName()) &&
+        !"".equalsIgnoreCase(empDTO.getName())) {
+        employeeData.setName(empDTO.getName());
+        }
+        employeeData.setImagePath(empDTO.getImagePath());
+        employeeData.setGender(empDTO.getGender());
+        employeeData.setDepartment(empDTO.getDepartment());
+        employeeData.setSalary(empDTO.getSalary());
+        employeeData.setNotes(empDTO.getNotes());
+        employeeData.setStartDate(empDTO.getStartDate());
         return empPayRollRepository.save(employeeData);
     }
 
