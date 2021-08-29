@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class EmpDTO {
@@ -24,10 +25,13 @@ public class EmpDTO {
     @Min(value = 5000, message = "Minimum salary should be more than 5000 Rs.")
     private int salary;
 
-    @JsonFormat(pattern = "dd MMM yyyy")
-    @NotNull(message = "StartDate should not be Empty")
-    @PastOrPresent(message = "StartDate should be past or today's date")
+//    @JsonFormat(pattern = "dd MMM yyyy")
+//    @NotNull(message = "StartDate should not be Empty")
+//    @PastOrPresent(message = "StartDate should be past or today's date")
     private LocalDate startDate;
-    private String department;
+//    @ElementCollection
+//    @CollectionTable(name = "employee_department", joinColumns = @JoinColumn(name ="id"))
+//    @Column(name = "department")
+    private List<String> department;
     private String notes;
 }
